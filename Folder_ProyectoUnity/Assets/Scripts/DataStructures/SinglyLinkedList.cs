@@ -1,25 +1,16 @@
 using System;
-public class DoublyLinkedList<T>
+public class SinglyLinkedList<T>
 {
     Nodo Cabeza;
-    private int longitud = 0;
-    public int Longitud
-    {
-        get
-        {
-            return longitud;
-        }
-    }
+    public int longitud = 0;
     class Nodo
     {
         public T Valor { get; set; }
         public Nodo Siguiente { get; set; }
-        public Nodo Anterior { get; set; }
         public Nodo(T valor)
         {
             this.Valor = valor;
             Siguiente = null;
-            Anterior = null;
         }
     }
     public void InsertarNodoAlInicio(T valor)
@@ -34,7 +25,6 @@ public class DoublyLinkedList<T>
         {
             Nodo nuevoNodo = new Nodo(valor);
             nuevoNodo.Siguiente = Cabeza;
-            Cabeza.Anterior = nuevoNodo;
             Cabeza = nuevoNodo;
             longitud = longitud + 1;
         }
@@ -47,21 +37,15 @@ public class DoublyLinkedList<T>
         }
         else
         {
-            Nodo ultimoNodo = ObtenerUltimoNodo();
+            Nodo ultimo = Cabeza;
+            while (ultimo.Siguiente != null)
+            {
+                ultimo = ultimo.Siguiente;
+            }
             Nodo nuevoNodo = new Nodo(valor);
-            ultimoNodo.Siguiente = nuevoNodo;
-            nuevoNodo.Anterior = ultimoNodo;
+            ultimo.Siguiente = nuevoNodo;
             longitud = longitud + 1;
         }
-    }
-    private Nodo ObtenerUltimoNodo()
-    {
-        Nodo ultimoNodo = Cabeza;
-        while (ultimoNodo.Siguiente != null)
-        {
-            ultimoNodo = ultimoNodo.Siguiente;
-        }
-        return ultimoNodo;
     }
     public void InsertarNodoPorPosicion(T valor, int posicion)
     {
@@ -79,19 +63,17 @@ public class DoublyLinkedList<T>
         }
         else
         {
-            Nodo nodoPosicion = Cabeza;
+            Nodo anterior = Cabeza;
             int iterador = 0;
-            while (iterador < posicion)
+            while (iterador < posicion - 1)
             {
-                nodoPosicion = nodoPosicion.Siguiente;
+                anterior = anterior.Siguiente;
                 iterador = iterador + 1;
             }
+            Nodo siguiente = anterior.Siguiente;
             Nodo nuevoNodo = new Nodo(valor);
-            Nodo anteriorNodo = nodoPosicion.Anterior;
-            anteriorNodo.Siguiente = nuevoNodo;
-            nuevoNodo.Anterior = anteriorNodo;
-            nuevoNodo.Siguiente = nodoPosicion;
-            nodoPosicion.Anterior = nuevoNodo;
+            anterior.Siguiente = nuevoNodo;
+            nuevoNodo.Siguiente = siguiente;
             longitud = longitud + 1;
         }
     }
@@ -210,10 +192,6 @@ public class DoublyLinkedList<T>
         else
         {
             Nodo nuevaCabeza = Cabeza.Siguiente;
-            if (nuevaCabeza != null)
-            {
-                nuevaCabeza.Anterior = null;
-            }
             Cabeza.Siguiente = null;
             Cabeza = nuevaCabeza;
             longitud = longitud - 1;
@@ -227,11 +205,14 @@ public class DoublyLinkedList<T>
         }
         else
         {
-            Nodo ultimoNodo = ObtenerUltimoNodo();
-            Nodo nuevoUltimoNodo = ultimoNodo.Anterior;
-            ultimoNodo.Anterior = null;
-            nuevoUltimoNodo.Siguiente = null;
+            Nodo anteriorDelUltimoNodo = Cabeza;
+            while (anteriorDelUltimoNodo.Siguiente.Siguiente != null)
+            {
+                anteriorDelUltimoNodo = anteriorDelUltimoNodo.Siguiente;
+            }
+            Nodo ultimoNodo = anteriorDelUltimoNodo.Siguiente;
             ultimoNodo = null;
+            anteriorDelUltimoNodo.Siguiente = null;
             longitud = longitud - 1;
         }
     }
@@ -251,49 +232,29 @@ public class DoublyLinkedList<T>
         }
         else
         {
-            Nodo nodoPosicion = Cabeza;
+            Nodo anterior = Cabeza;
             int iterador = 0;
-            while (iterador < posicion)
+            while (iterador < posicion - 1)
             {
-                nodoPosicion = nodoPosicion.Siguiente;
+                anterior = anterior.Siguiente;
                 iterador = iterador + 1;
             }
-            Nodo anteriorNodo = nodoPosicion.Anterior;
-            Nodo siguienteNodo = nodoPosicion.Siguiente;
-            anteriorNodo.Siguiente = siguienteNodo;
-            siguienteNodo.Anterior = anteriorNodo;
-            nodoPosicion.Anterior = null;
+            Nodo siguiente = anterior.Siguiente.Siguiente;
+            Nodo nodoPosicion = anterior.Siguiente;
             nodoPosicion.Siguiente = null;
             nodoPosicion = null;
+            anterior.Siguiente = null;
+            anterior.Siguiente = siguiente;
             longitud = longitud - 1;
         }
     }
-    public T[] GetNodesInRange(int start, int end)
+    public void ImprimirTodosLosNodos()
     {
-        if (start < 0 || end >= longitud)
+        Nodo tmp = Cabeza;
+        while (tmp != null)
         {
-            throw new IndexOutOfRangeException("Las posiciones deben estar dentro del rango de la lista.");
+            Console.Write(tmp.Valor + " ");
+            tmp = tmp.Siguiente;
         }
-
-        if (start > end)
-        {
-            throw new ArgumentException("La posición inicial debe ser menor o igual a la posición final.");
-        }
-
-        T[] nodesInRange = new T[end - start + 1];
-        Nodo current = Cabeza;
-        int index = 0;
-        while (index < start)
-        {
-            current = current.Siguiente;
-            index = index + 1;
-        }
-        for (int i = 0; i < nodesInRange.Length; ++i)
-        {
-            nodesInRange[i] = current.Valor;
-            current = current.Siguiente;
-        }
-
-        return nodesInRange;
     }
 }
