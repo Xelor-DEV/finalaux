@@ -1,217 +1,276 @@
 using System;
-public class DoubleLinkedCircularList<T>
+public class ListaDobleEnlazada<T>
 {
-    private Node head;
-    private int count = 0;
-    public int Count
+    Nodo Cabeza;
+    private int longitud = 0;
+    public int Longitud
     {
         get
         {
-            return count;
+            return longitud;
         }
     }
-    class Node
+    class Nodo
     {
-        public T Value { get; set; }
-        public Node Next { get; set; }
-        public Node Previous { get; set; }
-        public Node(T value)
+        public T Valor { get; set; }
+        public Nodo Siguiente { get; set; }
+        public Nodo Anterior { get; set; }
+        public Nodo(T valor)
         {
-            Value = value;
-            Next = null;
-            Previous = null;
-        }
-        ~Node()
-        {
-            Next = null;
-            Previous = null;
+            this.Valor = valor;
+            Siguiente = null;
+            Anterior = null;
         }
     }
-    public void InsertNodeAtStart(T value)
+    public void InsertarNodoAlInicio(T valor)
     {
-        if (head == null)
+        if (Cabeza == null)
         {
-            Node newNode = new Node(value);
-            head = newNode;
-            head.Next = head;
-            head.Previous = head;
-            count = count + 1;
+            Nodo nuevoNodo = new Nodo(valor);
+            Cabeza = nuevoNodo;
+            longitud = longitud + 1;
         }
         else
         {
-            Node newNode = new Node(value);
-            Node lastNode = head.Previous;
-            newNode.Next = head;
-            newNode.Previous = lastNode;
-            lastNode.Next = newNode;
-            head.Previous = newNode;
-            head = newNode;
-            count = count + 1;
+            Nodo nuevoNodo = new Nodo(valor);
+            nuevoNodo.Siguiente = Cabeza;
+            Cabeza.Anterior = nuevoNodo;
+            Cabeza = nuevoNodo;
+            longitud = longitud + 1;
         }
     }
-    public void InsertNodeAtEnd(T value)
+    public void InsertarNodoAlFinal(T valor)
     {
-        Node newNode = new Node(value);
-        if (head == null)
+        if (Cabeza == null)
         {
-            head = newNode;
-            head.Next = head;
-            head.Previous = head;
+            InsertarNodoAlInicio(valor);
         }
         else
         {
-            if (head.Previous != null)
+            Nodo ultimoNodo = ObtenerUltimoNodo();
+            Nodo nuevoNodo = new Nodo(valor);
+            ultimoNodo.Siguiente = nuevoNodo;
+            nuevoNodo.Anterior = ultimoNodo;
+            longitud = longitud + 1;
+        }
+    }
+    private Nodo ObtenerUltimoNodo()
+    {
+        Nodo ultimoNodo = Cabeza;
+        while (ultimoNodo.Siguiente != null)
+        {
+            ultimoNodo = ultimoNodo.Siguiente;
+        }
+        return ultimoNodo;
+    }
+    public void InsertarNodoPorPosicion(T valor, int posicion)
+    {
+        if (posicion == 0)
+        {
+            InsertarNodoAlInicio(valor);
+        }
+        else if (posicion == longitud - 1)
+        {
+            InsertarNodoAlFinal(valor);
+        }
+        else if (posicion >= longitud)
+        {
+            throw new Exception("El valor introduccido va mas alla de la longitud de la lista");
+        }
+        else
+        {
+            Nodo nodoPosicion = Cabeza;
+            int iterador = 0;
+            while (iterador < posicion)
             {
-                Node lastNode = head.Previous;
-                newNode.Next = head;
-                newNode.Previous = lastNode;
-                lastNode.Next = newNode;
-                head.Previous = newNode;
+                nodoPosicion = nodoPosicion.Siguiente;
+                iterador = iterador + 1;
             }
-            else
+            Nodo nuevoNodo = new Nodo(valor);
+            Nodo anteriorNodo = nodoPosicion.Anterior;
+            anteriorNodo.Siguiente = nuevoNodo;
+            nuevoNodo.Anterior = anteriorNodo;
+            nuevoNodo.Siguiente = nodoPosicion;
+            nodoPosicion.Anterior = nuevoNodo;
+            longitud = longitud + 1;
+        }
+    }
+    public void ModificarAlInicio(T valor)
+    {
+        if (Cabeza == null)
+        {
+            throw new Exception("No existe ningun nodo.");
+        }
+        else
+        {
+            Cabeza.Valor = valor;
+        }
+    }
+    public void ModificarAlFinal(T valor)
+    {
+        if (Cabeza == null)
+        {
+            ModificarAlInicio(valor);
+        }
+        else
+        {
+            Nodo ultimo = Cabeza;
+            while (ultimo.Siguiente != null)
             {
-                head.Next = newNode;
-                head.Previous = newNode;
-                newNode.Next = head;
-                newNode.Previous = head;
+                ultimo = ultimo.Siguiente;
             }
+            ultimo.Valor = valor;
         }
-        count = count + 1;
     }
-    public void InsertNodeAtPosition(T value, int position)
+    public void ModificarNodoPorPosicion(T valor, int posicion)
     {
-        if (position == 0)
+        if (posicion == 0)
         {
-            InsertNodeAtStart(value);
+            ModificarAlInicio(valor);
         }
-        else if (position == count - 1)
+        else if (posicion == longitud - 1)
         {
-            InsertNodeAtEnd(value);
-
+            ModificarAlFinal(valor);
         }
-        else if (position >= count || position < 0)
+        else if (posicion >= longitud)
         {
-            throw new IndexOutOfRangeException("Es una posicion mas alla del tamaño de la lista o es un numero negativo");
+            throw new Exception("No existe esa posicion en la lista");
         }
         else
         {
-            Node currentNode = head;
-            int iterator = 0;
-            while (iterator < position)
+            Nodo nodoPosicion = Cabeza;
+            int iterador = 0;
+            while (iterador < posicion)
             {
-                currentNode = currentNode.Next;
-                iterator = iterator + 1;
+                nodoPosicion = nodoPosicion.Siguiente;
+                iterador = iterador + 1;
             }
-            Node newNode = new Node(value);
-            Node previousCurrentNode = currentNode.Previous;
-            newNode.Previous = currentNode.Previous;
-            newNode.Next = currentNode;
-            previousCurrentNode.Next = newNode;
-            currentNode.Previous = newNode;
-            count = count + 1;
+            nodoPosicion.Valor = valor;
         }
     }
-    public void ModifyAtStart(T value)
+    public T ObtenerNodoDelInicio()
     {
-        if (head == null)
+        if (Cabeza == null)
         {
-            throw new NullReferenceException();
+            throw new Exception("La lista esta vacia");
         }
         else
         {
-            head.Value = value;
+            return Cabeza.Valor;
         }
     }
-    public void ModifyAtEnd(T value)
+    public T ObtenerNodoDelFinal()
     {
-        if (head == null)
+        if (Cabeza == null)
         {
-            ModifyAtStart(value);
+            return ObtenerNodoDelInicio();
         }
         else
         {
-            Node lastNode = head.Previous;
-            lastNode.Value = value;
-        }
-    }
-    public void ModifyAtPosition(T value, int position)
-    {
-        if (position == 0)
-        {
-            ModifyAtStart(value);
-        }
-        else if (position == count - 1)
-        {
-            ModifyAtEnd(value);
-        }
-        else if (position >= count || position < 0)
-        {
-            throw new IndexOutOfRangeException();
-        }
-        else
-        {
-            Node tmp = head;
-            int iterator = 0;
-            while (iterator < position)
+            Nodo ultimo = Cabeza;
+            while (ultimo.Siguiente != null)
             {
-                tmp = tmp.Next;
-                iterator = iterator + 1;
+                ultimo = ultimo.Siguiente;
             }
-            tmp.Value = value;
+            return ultimo.Valor;
         }
     }
-    public T GetNodeAtStart()
+    public T ObtenerNodoPorPosicion(int posicion)
     {
-        if (head == null)
+        if (posicion == 0)
         {
-            throw new NullReferenceException();
+            return ObtenerNodoDelInicio();
+        }
+        else if (posicion == longitud - 1)
+        {
+            return ObtenerNodoDelFinal();
+        }
+        else if (posicion >= longitud)
+        {
+            throw new Exception("El valor introduccido va mas alla de la longitud de la lista");
         }
         else
         {
-            return head.Value;
-        }
-    }
-    public T GetNodeAtEnd()
-    {
-        if (head == null)
-        {
-            return GetNodeAtStart();
-        }
-        else
-        {
-            Node lastNode = head.Previous;
-            return lastNode.Value;
-        }
-    }
-    public T GetNodeAtPosition(int position)
-    {
-        if (position == 0)
-        {
-            return GetNodeAtStart();
-        }
-        else if (position == count - 1)
-        {
-            return GetNodeAtEnd();
-        }
-        else if (position >= count || position < 0)
-        {
-            throw new IndexOutOfRangeException();
-        }
-        else
-        {
-            Node tmp = head;
-            int iterator = 0;
-            while (iterator < position)
+            Nodo nodoPosicion = Cabeza;
+            int iterador = 0;
+            while (iterador < posicion)
             {
-                tmp = tmp.Next;
-                iterator = iterator + 1;
+                nodoPosicion = nodoPosicion.Siguiente;
+                iterador = iterador + 1;
             }
-            return tmp.Value;
+            return nodoPosicion.Valor;
+        }
+    }
+    public void EliminarAlInicio()
+    {
+        if (Cabeza == null)
+        {
+            throw new Exception("No hay elementos en la lista");
+        }
+        else
+        {
+            Nodo nuevaCabeza = Cabeza.Siguiente;
+            if (nuevaCabeza != null)
+            {
+                nuevaCabeza.Anterior = null;
+            }
+            Cabeza.Siguiente = null;
+            Cabeza = nuevaCabeza;
+            longitud = longitud - 1;
+        }
+    }
+    public void EliminarAlFinal()
+    {
+        if (Cabeza == null)
+        {
+            EliminarAlInicio();
+        }
+        else
+        {
+            Nodo ultimoNodo = ObtenerUltimoNodo();
+            Nodo nuevoUltimoNodo = ultimoNodo.Anterior;
+            ultimoNodo.Anterior = null;
+            nuevoUltimoNodo.Siguiente = null;
+            ultimoNodo = null;
+            longitud = longitud - 1;
+        }
+    }
+    public void EliminarNodoPorPosicion(int posicion)
+    {
+        if (posicion == 0)
+        {
+            EliminarAlInicio();
+        }
+        else if (posicion == longitud - 1)
+        {
+            EliminarAlFinal();
+        }
+        else if (posicion >= longitud)
+        {
+            throw new Exception("El valor introduccido va mas alla de la longitud de la lista");
+        }
+        else
+        {
+            Nodo nodoPosicion = Cabeza;
+            int iterador = 0;
+            while (iterador < posicion)
+            {
+                nodoPosicion = nodoPosicion.Siguiente;
+                iterador = iterador + 1;
+            }
+            Nodo anteriorNodo = nodoPosicion.Anterior;
+            Nodo siguienteNodo = nodoPosicion.Siguiente;
+            anteriorNodo.Siguiente = siguienteNodo;
+            siguienteNodo.Anterior = anteriorNodo;
+            nodoPosicion.Anterior = null;
+            nodoPosicion.Siguiente = null;
+            nodoPosicion = null;
+            longitud = longitud - 1;
         }
     }
     public T[] GetNodesInRange(int start, int end)
     {
-        if (start < 0 || end >= count)
+        if (start < 0 || end >= longitud)
         {
             throw new IndexOutOfRangeException("Las posiciones deben estar dentro del rango de la lista.");
         }
@@ -222,90 +281,19 @@ public class DoubleLinkedCircularList<T>
         }
 
         T[] nodesInRange = new T[end - start + 1];
-        Node current = head;
+        Nodo current = Cabeza;
         int index = 0;
         while (index < start)
         {
-            current = current.Next;
+            current = current.Siguiente;
             index = index + 1;
         }
         for (int i = 0; i < nodesInRange.Length; ++i)
         {
-            nodesInRange[i] = current.Value;
-            current = current.Next;
+            nodesInRange[i] = current.Valor;
+            current = current.Siguiente;
         }
 
         return nodesInRange;
-    }
-    public void DeleteNodeAtStart()
-    {
-        if (head == null)
-        {
-            throw new NullReferenceException();
-        }
-        else
-        {
-            Node lastNode = head.Previous;
-            Node newHead = head.Next;
-            Node oldHead = head;
-            head = newHead;
-            head.Previous = lastNode;
-            lastNode.Next = head;
-            oldHead.Next = null;
-            oldHead.Previous = null;
-            oldHead = null;
-            count = count - 1;
-        }
-    }
-    public void DeleteNodeAtEnd()
-    {
-        if (head == null)
-        {
-            DeleteNodeAtStart();
-        }
-        else
-        {
-            Node lastNode = head.Previous;
-            Node newLastNode = lastNode.Previous;
-            newLastNode.Next = head;
-            head.Previous = newLastNode;
-            lastNode.Next = null;
-            lastNode.Previous = null;
-            lastNode = null;
-            count = count - 1;
-        }
-    }
-    public void DeleteNodeAtPosition(int position)
-    {
-        if (position == 0)
-        {
-            DeleteNodeAtStart();
-        }
-        else if (position == count - 1)
-        {
-            DeleteNodeAtEnd();
-        }
-        else if (position >= count || position < 0)
-        {
-            throw new IndexOutOfRangeException("No existe esa posicion en la lista");
-        }
-        else
-        {
-            Node current = head;
-            int iterator = 0;
-            while (iterator < position)
-            {
-                current = current.Next;
-                iterator = iterator + 1;
-            }
-            Node previousNode = current.Previous;
-            Node nextNode = current.Next;
-            previousNode.Next = nextNode;
-            nextNode.Previous = previousNode;
-            current.Next = null;
-            current.Previous = null;
-            current = null;
-            count = count - 1;
-        }
     }
 }

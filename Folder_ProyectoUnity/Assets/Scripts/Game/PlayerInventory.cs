@@ -3,7 +3,7 @@ using System;
 
 public class PlayerInventory : MonoBehaviour
 {
-    private DoubleLinkedCircularList<RobotCard> robotList = new DoubleLinkedCircularList<RobotCard>();
+    private ListaDobleEnlazada<RobotCard> robotList = new ListaDobleEnlazada<RobotCard>();
     public RobotCard[] displayedRobots;
     [SerializeField] private int currentPage;
     [SerializeField] private int robotsPerPage;
@@ -22,8 +22,8 @@ public class PlayerInventory : MonoBehaviour
     }
     public void AddRobot(RobotCard newRobot)
     {
-        robotList.InsertNodeAtEnd(newRobot);
-        if (robotList.Count > robotsPerPage * totalPages)
+        robotList.InsertarNodoAlFinal(newRobot);
+        if (robotList.Longitud > robotsPerPage * totalPages)
         {
             totalPages = totalPages + 1;
         }
@@ -31,14 +31,14 @@ public class PlayerInventory : MonoBehaviour
     }
     public void RemoveRobot(int index)
     {
-        if (index < 0 || index >= robotList.Count)
+        if (index < 0 || index >= robotList.Longitud)
         {
             throw new IndexOutOfRangeException("Índice fuera de rango");
         }
         else
         {
-            robotList.DeleteNodeAtPosition(index);
-            if (robotList.Count <= robotsPerPage * (totalPages - 1) && totalPages > 1)
+            robotList.EliminarNodoPorPosicion(index);
+            if (robotList.Longitud <= robotsPerPage * (totalPages - 1) && totalPages > 1)
             {
                 totalPages = totalPages - 1;
             }
@@ -75,7 +75,7 @@ public class PlayerInventory : MonoBehaviour
     }
     public void UpdateDisplayedRobots()
     {
-        if (robotList.Count == 0)
+        if (robotList.Longitud == 0)
         {
             displayedRobots = new RobotCard[0];
             OnInventoryUpdated?.Invoke(0);
@@ -83,7 +83,7 @@ public class PlayerInventory : MonoBehaviour
         else
         {
             int start = currentPage * robotsPerPage;
-            int end = Mathf.Min(start + robotsPerPage, robotList.Count) - 1;
+            int end = Mathf.Min(start + robotsPerPage, robotList.Longitud) - 1;
             if (start > end)
             {
                 start = end;
