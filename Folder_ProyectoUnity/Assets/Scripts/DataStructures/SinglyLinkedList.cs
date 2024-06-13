@@ -1,260 +1,271 @@
 using System;
 public class SinglyLinkedList<T>
 {
-    Nodo Cabeza;
-    public int longitud = 0;
-    class Nodo
+    private Node head;
+    private int count = 0;
+    public int Count
     {
-        public T Valor { get; set; }
-        public Nodo Siguiente { get; set; }
-        public Nodo(T valor)
+        get
         {
-            this.Valor = valor;
-            Siguiente = null;
+            return count;
         }
     }
-    public void InsertarNodoAlInicio(T valor)
+    class Node
     {
-        if (Cabeza == null)
+        public T Value { get; set; }
+        public Node Next { get; set; }
+        public Node(T value)
         {
-            Nodo nuevoNodo = new Nodo(valor);
-            Cabeza = nuevoNodo;
-            longitud = longitud + 1;
+            Value = value;
+            Next = null;
+        }
+    }
+    private Node GetLastNode()
+    {
+        Node lastNode = head;
+        while (lastNode.Next != null)
+        {
+            lastNode = lastNode.Next;
+        }
+        return lastNode;
+    }
+    private Node GetPreviousNodeAtPosition(int position)
+    {
+        Node previous = head;
+        int iterator = 0;
+        while (iterator < position - 1)
+        {
+            previous = previous.Next;
+            iterator = iterator + 1;
+        }
+        return previous;
+    }
+    private Node GetNodeAtPosition(int position)
+    {
+        Node nodePosition = head;
+        int iterator = 0;
+        while (iterator < position)
+        {
+            nodePosition = nodePosition.Next;
+            iterator = iterator + 1;
+        }
+        return nodePosition;
+    }
+    private Node GetNodeBeforeLastNode()
+    {
+        Node previousOfLastNode = head;
+        while (previousOfLastNode.Next.Next != null)
+        {
+            previousOfLastNode = previousOfLastNode.Next;
+        }
+        return previousOfLastNode;
+    }
+    public void InsertNodeAtStart(T value)
+    {
+        if (head == null)
+        {
+            Node newNode = new Node(value);
+            head = newNode;
+            count = count + 1;
         }
         else
         {
-            Nodo nuevoNodo = new Nodo(valor);
-            nuevoNodo.Siguiente = Cabeza;
-            Cabeza = nuevoNodo;
-            longitud = longitud + 1;
+            Node newNode = new Node(value);
+            newNode.Next = head;
+            head = newNode;
+            count = count + 1;
         }
     }
-    public void InsertarNodoAlFinal(T valor)
+    public void InsertNodeAtEnd(T value)
     {
-        if (Cabeza == null)
+        if (head == null)
         {
-            InsertarNodoAlInicio(valor);
+            InsertNodeAtStart(value);
         }
         else
         {
-            Nodo ultimo = Cabeza;
-            while (ultimo.Siguiente != null)
-            {
-                ultimo = ultimo.Siguiente;
-            }
-            Nodo nuevoNodo = new Nodo(valor);
-            ultimo.Siguiente = nuevoNodo;
-            longitud = longitud + 1;
+            Node lastNode = GetLastNode();
+            Node newNode = new Node(value);
+            lastNode.Next = newNode;
+            count = count + 1;
         }
     }
-    public void InsertarNodoPorPosicion(T valor, int posicion)
+    public void InsertNodeAtPosition(T value, int position)
     {
-        if (posicion == 0)
+        if (position == 0)
         {
-            InsertarNodoAlInicio(valor);
+            InsertNodeAtStart(value);
         }
-        else if (posicion == longitud - 1)
+        else if (position == Count - 1)
         {
-            InsertarNodoAlFinal(valor);
+            InsertNodeAtEnd(value);
         }
-        else if (posicion >= longitud)
+        else if (position >= Count)
         {
-            throw new Exception("El valor introduccido va mas alla de la longitud de la lista");
+            throw new Exception("The introduced value goes beyond the length of the list");
         }
         else
         {
-            Nodo anterior = Cabeza;
-            int iterador = 0;
-            while (iterador < posicion - 1)
-            {
-                anterior = anterior.Siguiente;
-                iterador = iterador + 1;
-            }
-            Nodo siguiente = anterior.Siguiente;
-            Nodo nuevoNodo = new Nodo(valor);
-            anterior.Siguiente = nuevoNodo;
-            nuevoNodo.Siguiente = siguiente;
-            longitud = longitud + 1;
+            Node previous = GetPreviousNodeAtPosition(position);
+            Node next = previous.Next;
+            Node newNode = new Node(value);
+            previous.Next = newNode;
+            newNode.Next = next;
+            count = count + 1;
         }
     }
-    public void ModificarAlInicio(T valor)
+    public void ModifyAtStart(T value)
     {
-        if (Cabeza == null)
+        if (head == null)
         {
-            throw new Exception("No existe ningun nodo.");
+            throw new Exception("There is no node.");
         }
         else
         {
-            Cabeza.Valor = valor;
+            head.Value = value;
         }
     }
-    public void ModificarAlFinal(T valor)
+    public void ModifyAtEnd(T value)
     {
-        if (Cabeza == null)
+        if (head == null)
         {
-            ModificarAlInicio(valor);
+            ModifyAtStart(value);
         }
         else
         {
-            Nodo ultimo = Cabeza;
-            while (ultimo.Siguiente != null)
-            {
-                ultimo = ultimo.Siguiente;
-            }
-            ultimo.Valor = valor;
+            Node lastNode = GetLastNode();
+            lastNode.Value = value;
         }
     }
-    public void ModificarNodoPorPosicion(T valor, int posicion)
+    public void ModifyNodeAtPosition(T value, int position)
     {
-        if (posicion == 0)
+        if (position == 0)
         {
-            ModificarAlInicio(valor);
+            ModifyAtStart(value);
         }
-        else if (posicion == longitud - 1)
+        else if (position == Count - 1)
         {
-            ModificarAlFinal(valor);
+            ModifyAtEnd(value);
         }
-        else if (posicion >= longitud)
+        else if (position >= Count)
         {
-            throw new Exception("No existe esa posicion en la lista");
+            throw new Exception("That position does not exist in the list");
         }
         else
         {
-            Nodo nodoPosicion = Cabeza;
-            int iterador = 0;
-            while (iterador < posicion)
-            {
-                nodoPosicion = nodoPosicion.Siguiente;
-                iterador = iterador + 1;
-            }
-            nodoPosicion.Valor = valor;
+            Node nodePosition = GetNodeAtPosition(position);
+            nodePosition.Value = value;
         }
     }
-    public T ObtenerNodoDelInicio()
+    public T GetNodeFromStart()
     {
-        if (Cabeza == null)
+        if (head == null)
         {
-            throw new Exception("La lista esta vacia");
+            throw new Exception("The list is empty");
         }
         else
         {
-            return Cabeza.Valor;
+            return head.Value;
         }
     }
-    public T ObtenerNodoDelFinal()
+    public T GetNodeFromEnd()
     {
-        if (Cabeza == null)
+        if (head == null)
         {
-            return ObtenerNodoDelInicio();
+            return GetNodeFromStart();
         }
         else
         {
-            Nodo ultimo = Cabeza;
-            while (ultimo.Siguiente != null)
-            {
-                ultimo = ultimo.Siguiente;
-            }
-            return ultimo.Valor;
+            Node lastNode = GetLastNode();
+            return lastNode.Value;
         }
     }
-    public T ObtenerNodoPorPosicion(int posicion)
+    public T GetNodeByPosition(int position)
     {
-        if (posicion == 0)
+        if (position == 0)
         {
-            return ObtenerNodoDelInicio();
+            return GetNodeFromStart();
         }
-        else if (posicion == longitud - 1)
+        else if (position == Count - 1)
         {
-            return ObtenerNodoDelFinal();
+            return GetNodeFromEnd();
         }
-        else if (posicion >= longitud)
+        else if (position >= Count)
         {
-            throw new Exception("El valor introduccido va mas alla de la longitud de la lista");
+            throw new Exception("The introduced value goes beyond the length of the list");
         }
         else
         {
-            Nodo nodoPosicion = Cabeza;
-            int iterador = 0;
-            while (iterador < posicion)
-            {
-                nodoPosicion = nodoPosicion.Siguiente;
-                iterador = iterador + 1;
-            }
-            return nodoPosicion.Valor;
+            Node nodePosition = GetNodeAtPosition(position);
+            return nodePosition.Value;
         }
     }
-    public void EliminarAlInicio()
+    public void DeleteAtStart()
     {
-        if (Cabeza == null)
+        if (head == null)
         {
-            throw new Exception("No hay elementos en la lista");
+            throw new Exception("There are no elements in the list");
         }
         else
         {
-            Nodo nuevaCabeza = Cabeza.Siguiente;
-            Cabeza.Siguiente = null;
-            Cabeza = nuevaCabeza;
-            longitud = longitud - 1;
+            Node newHead = head.Next;
+            head.Next = null;
+            head = newHead;
+            count = count - 1;
         }
     }
-    public void EliminarAlFinal()
+    public void DeleteAtEnd()
     {
-        if (Cabeza == null)
+        if (head == null)
         {
-            EliminarAlInicio();
+            DeleteAtStart();
         }
         else
         {
-            Nodo anteriorDelUltimoNodo = Cabeza;
-            while (anteriorDelUltimoNodo.Siguiente.Siguiente != null)
-            {
-                anteriorDelUltimoNodo = anteriorDelUltimoNodo.Siguiente;
-            }
-            Nodo ultimoNodo = anteriorDelUltimoNodo.Siguiente;
-            ultimoNodo = null;
-            anteriorDelUltimoNodo.Siguiente = null;
-            longitud = longitud - 1;
+            Node previousOfLastNode = GetNodeBeforeLastNode();
+            Node lastNode = previousOfLastNode.Next;
+            lastNode = null;
+            previousOfLastNode.Next = null;
+            count = count - 1;
         }
     }
-    public void EliminarNodoPorPosicion(int posicion)
+    public void DeleteNodeByPosition(int position)
     {
-        if (posicion == 0)
+        if (position == 0)
         {
-            EliminarAlInicio();
+            DeleteAtStart();
         }
-        else if (posicion == longitud - 1)
+        else if (position == Count - 1)
         {
-            EliminarAlFinal();
+            DeleteAtEnd();
         }
-        else if (posicion >= longitud)
+        else if (position >= Count)
         {
-            throw new Exception("El valor introduccido va mas alla de la longitud de la lista");
+            throw new Exception("The introduced value goes beyond the length of the list");
         }
         else
         {
-            Nodo anterior = Cabeza;
-            int iterador = 0;
-            while (iterador < posicion - 1)
-            {
-                anterior = anterior.Siguiente;
-                iterador = iterador + 1;
-            }
-            Nodo siguiente = anterior.Siguiente.Siguiente;
-            Nodo nodoPosicion = anterior.Siguiente;
-            nodoPosicion.Siguiente = null;
-            nodoPosicion = null;
-            anterior.Siguiente = null;
-            anterior.Siguiente = siguiente;
-            longitud = longitud - 1;
+            Node previous = GetPreviousNodeAtPosition(position);
+            Node next = previous.Next.Next;
+            Node nodePosition = previous.Next;
+            nodePosition.Next = null;
+            nodePosition = null;
+            previous.Next = null;
+            previous.Next = next;
+            count = count - 1;
         }
     }
-    public void ImprimirTodosLosNodos()
+    public T[] ListToArray()
     {
-        Nodo tmp = Cabeza;
-        while (tmp != null)
+        T[] array = new T[Count];
+        Node current = head;
+        int index = 0;
+        while (current != null)
         {
-            Console.Write(tmp.Valor + " ");
-            tmp = tmp.Siguiente;
+            array[index] = current.Value;
+            current = current.Next;
+            index = index + 1;
         }
+        return array;
     }
 }

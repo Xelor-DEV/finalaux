@@ -22,8 +22,8 @@ public class PlayerInventory : MonoBehaviour
     }
     public void AddRobot(RobotCard newRobot)
     {
-        robotList.InsertarNodoAlFinal(newRobot);
-        if (robotList.Longitud > robotsPerPage * totalPages)
+        robotList.InsertNodeAtEnd(newRobot);
+        if (robotList.Count > robotsPerPage * totalPages)
         {
             totalPages = totalPages + 1;
         }
@@ -31,14 +31,14 @@ public class PlayerInventory : MonoBehaviour
     }
     public void RemoveRobot(int index)
     {
-        if (index < 0 || index >= robotList.Longitud)
+        if (index < 0 || index >= robotList.Count)
         {
             throw new IndexOutOfRangeException("Índice fuera de rango");
         }
         else
         {
-            robotList.EliminarNodoPorPosicion(index);
-            if (robotList.Longitud <= robotsPerPage * (totalPages - 1) && totalPages > 1)
+            robotList.DeleteNodeByPosition(index);
+            if (robotList.Count <= robotsPerPage * (totalPages - 1) && totalPages > 1)
             {
                 totalPages = totalPages - 1;
             }
@@ -75,7 +75,7 @@ public class PlayerInventory : MonoBehaviour
     }
     public void UpdateDisplayedRobots()
     {
-        if (robotList.Longitud == 0)
+        if (robotList.Count == 0)
         {
             displayedRobots = new RobotCard[0];
             OnInventoryUpdated?.Invoke(0);
@@ -83,7 +83,7 @@ public class PlayerInventory : MonoBehaviour
         else
         {
             int start = currentPage * robotsPerPage;
-            int end = Mathf.Min(start + robotsPerPage, robotList.Longitud) - 1;
+            int end = Mathf.Min(start + robotsPerPage, robotList.Count) - 1;
             if (start > end)
             {
                 start = end;
