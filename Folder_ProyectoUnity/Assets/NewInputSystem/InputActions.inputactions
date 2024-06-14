@@ -189,6 +189,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Menu",
+            "id": "0ecd78e1-99e7-4994-9d97-2629be2e04d2",
+            "actions": [
+                {
+                    "name": "GoMenu",
+                    "type": "Button",
+                    "id": "5f05d3a4-b69d-4989-8cb4-7dacef2f2dee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "169cf865-cea3-4ebd-9f04-4a1ad67f854b",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "GoMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

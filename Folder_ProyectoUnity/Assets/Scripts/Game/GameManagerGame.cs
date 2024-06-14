@@ -4,6 +4,10 @@ public class GameManagerGame : MonoBehaviour
 {
     [SerializeField] private UIManager uiManager;
     [SerializeField] private AudioManager audioManager;
+    private void Start()
+    {
+        audioManager.PlayMusic(0);
+    }
     private void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
