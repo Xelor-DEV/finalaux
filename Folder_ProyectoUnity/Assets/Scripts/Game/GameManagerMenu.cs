@@ -5,78 +5,16 @@ using DG.Tweening;
 using UnityEngine.InputSystem;
 public class GameManagerMenu : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private UIManagerMenu uiManager;
     [SerializeField] private AudioManager audioManager;
-    [SerializeField] private VideoPlayer splashScreen;
-    [SerializeField] private GameObject block1;
-    [SerializeField] private GameObject block2;
-    [SerializeField] private GameObject objective;
-    [SerializeField] private GameObject menu;
-    [SerializeField] private float duration;
-    [SerializeField] private Ease ease;
-    [SerializeField] private bool ended;
-    private void Awake()
-    {
-        splashScreen.Play();
-    }
-    private void OnEnable()
-    {
-        splashScreen.started += OnVideoStarted;
-        splashScreen.loopPointReached += OnVideoEnded;
-    }
-    private void OnVideoStarted(VideoPlayer vp)
-    {
-        audioManager.PlayMusic(0);
-    }
-    private void OnVideoEnded(VideoPlayer vp)
-    {
-        Telon();
-
-    }
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
-    public void GoMenu(InputAction.CallbackContext context)
+    public void ExitGame()
     {
-        if (context.performed == true && ended == true)
-        {
-            Telon2();
-
-        }
-    }
-    public void Telon()
-    {
-        Vector3 tmp = block1.transform.position;
-        Vector3 tmp2 = block2.transform.position;
-        block1.transform.DOMove(objective.transform.position, duration).SetEase(ease).OnComplete(() =>
-        {
-            block1.transform.DOMove(tmp, duration).SetEase(ease);
-        });
-        block2.transform.DOMove(objective.transform.position, duration).SetEase(ease).OnComplete(() =>
-        {
-            Destroy(splashScreen.gameObject);
-            splashScreen = null;      
-            block2.transform.DOMove(tmp2, duration).SetEase(ease).OnComplete(() =>
-            {
-                ended = true;
-            });
-        });
-    }
-    public void Telon2()
-    {
-        Vector3 tmp = block1.transform.position;
-        Vector3 tmp2 = block2.transform.position;
-        ended = false;
-        block1.transform.DOMove(objective.transform.position, duration).SetEase(ease).OnComplete(() =>
-        {
-            block1.transform.DOMove(tmp, duration).SetEase(ease);
-        });
-        block2.transform.DOMove(objective.transform.position, duration).SetEase(ease).OnComplete(() =>
-        {
-            menu.SetActive(false);
-            block2.transform.DOMove(tmp2, duration).SetEase(ease);
-        });
+        Application.Quit();
     }
     public void SaveAudioSettings()
     {
