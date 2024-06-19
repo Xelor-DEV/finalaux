@@ -8,7 +8,8 @@ public class UIManagerMenu : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private VideoPlayer splashScreen;
-    [SerializeField] private GameObject startSccreen;
+    [SerializeField] private GameObject startScreen;
+    [SerializeField] private GameObject blackScreen;
     [SerializeField] private RectTransform buttons;
     [SerializeField] private RectTransform[] windows;
     [Header("Transition Properties")]
@@ -63,6 +64,7 @@ public class UIManagerMenu : MonoBehaviour
     }
     private void OnVideoStarted(VideoPlayer vp)
     {
+        Destroy(blackScreen);
         AudioManager.Instance.PlayMusic(0);
     }
     private void OnVideoEnded(VideoPlayer vp)
@@ -74,7 +76,7 @@ public class UIManagerMenu : MonoBehaviour
         if (context.performed == true && transitionEnded == true)
         {
             transitionEnded = false;
-            Transition(startSccreen, false);
+            Transition(startScreen, false);
         }
     }
     public void Transition(GameObject objectToDestroy, bool isSplashScreen)

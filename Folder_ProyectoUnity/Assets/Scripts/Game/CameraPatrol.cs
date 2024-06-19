@@ -5,13 +5,14 @@ public class CameraPatrol : MonoBehaviour
     [SerializeField] private Transform[] patrolPoints;
     [Header("Properties")]
     [SerializeField] private float speed;
+    [SerializeField] private float pointSpacing;
     private int index = 0;
     private Vector3 destination;
     void Start()
     {
         if (patrolPoints.Length > 0)
         {
-            destination = patrolPoints[index].position;
+            destination = patrolPoints[index].position + new Vector3(pointSpacing, pointSpacing, pointSpacing);
         }
     }
     void Update()
@@ -21,7 +22,7 @@ public class CameraPatrol : MonoBehaviour
             Vector3 direction = SubtractVectors(destination, transform.position);
             direction = NormalizeVector(direction);
             transform.position = AddVectors(transform.position, MultiplyVector(direction, speed * Time.deltaTime));
-            if (DistanceBetweenVectors(transform.position, destination) < 0.1f)
+            if (DistanceBetweenVectors(transform.position, destination) < pointSpacing)
             {
                 if (index < patrolPoints.Length - 1)
                 {
