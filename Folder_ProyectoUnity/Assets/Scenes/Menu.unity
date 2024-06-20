@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.25810277, g: 0.6908051, b: 0.81899595, a: 1}
+  m_IndirectSpecularColor: {r: 0.25732678, g: 0.69084895, b: 0.81972224, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1424,8 +1424,8 @@ RectTransform:
   - {fileID: 1408144071}
   - {fileID: 1998970226}
   - {fileID: 436565922}
-  - {fileID: 1284175949}
   - {fileID: 1326920415}
+  - {fileID: 1284175949}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2000,8 +2000,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 995}
-  m_SizeDelta: {x: 600, y: 800}
+  m_AnchoredPosition: {x: 0, y: 1080}
+  m_SizeDelta: {x: 1081.25, y: 865}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1284175950
 MonoBehaviour:
@@ -2023,7 +2023,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 709947594feaed4439974b9f1d63ec91, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2143,7 +2143,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -37.100006, y: 0.000011444092}
+  m_AnchoredPosition: {x: 0.000045776367, y: 0.000011444092}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1325221380
@@ -2166,7 +2166,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Jugar
+  m_text: Regresar
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2761796701b63dd4b895c430b5771490, type: 2}
   m_sharedMaterial: {fileID: 7343516639716738211, guid: 2761796701b63dd4b895c430b5771490,
@@ -2997,7 +2997,7 @@ MonoBehaviour:
   ease: 18
   transitionEnded: 0
   hideShowOffsetX: 526
-  hideShowOffsetY: 986
+  hideShowOffsetY: 1080
   masterSlider: {fileID: 0}
   musicSlider: {fileID: 0}
   sfxSlider: {fileID: 0}
@@ -3183,7 +3183,7 @@ GameObject:
   - component: {fileID: 1621112434}
   - component: {fileID: 1621112433}
   m_Layer: 5
-  m_Name: Jugar (1)
+  m_Name: Regresar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3206,8 +3206,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 30, y: -267}
-  m_SizeDelta: {x: 378, y: 95}
+  m_AnchoredPosition: {x: 270, y: -361}
+  m_SizeDelta: {x: 280.661, y: 89.921}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1621112433
 MonoBehaviour:
@@ -3298,7 +3298,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8dff4817a538cfa4ba98d5c1e7306c94, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c0c8a1a9ecc07194288e034d75491fbb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
